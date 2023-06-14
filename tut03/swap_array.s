@@ -29,8 +29,22 @@ swap_loop_cond:
                                         # calculate &numbers[i]
                                         # Address = base + offset*sizeof(element)
 
-	# TODO: The logic here!
+	mul     $t1, 	$t0, 	4       # 1) Find the number of bytes we need to offset inside the array
+                                        #    Since this is a 4-byte integer, we need to multiply by 4.
+        la      $t2, 	numbers         # 2) Find the base address of the array
+        add     $t3, 	$t1, 	$t2     # 3) Add the offset to the base address
+        lw      $t4, 	($t3)           # 4) Load x from the array at numbers[i]
 
+	sub	$t5,	N_SIZE_M_1, $t0
+
+	mul     $t6, 	$t5, 	4       # 1) Find the number of bytes we need to offset inside the array
+                                        #    Since this is a 4-byte integer, we need to multiply by 4.
+        la      $t2, 	numbers         # 2) Find the base address of the array
+        add     $t7, 	$t6, 	$t2     # 3) Add the offset to the base address
+        lw      $t8, 	($t7)           # 4) Load y from the array at numbers[10-i-1]
+
+	sw	$t8,	($t3)		# Store both values back in the opposite positions
+	sw	$t4,	($t7)		
 
 swap_loop_iter:
                                         # Jump back to the loop condition

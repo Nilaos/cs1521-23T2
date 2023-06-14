@@ -37,6 +37,7 @@ scan_loop_cond:
 	sw	$t1,	($t4)		# Store a value into numbers[i], now we have the address
 	
 	sw	$t1,	numbers($t3)	# Alternative way, which does step 3 for you
+					# 
 
 					# Jump back to the loop condition
 	addi    $t0, $t0, 1             # i++;
