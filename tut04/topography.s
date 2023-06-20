@@ -34,18 +34,20 @@ points_loop_cond:
                                         # TODO: Complete these three!
 	# 1) Access the array of point structs
 	# &elem[i] = start of the array + i * size of each element
-	
-
+	la	$t4,	my_points	# base address of array of structs
+	mul	$t5,	$t0,	POINT_SZ	# Offset calculation
+	add	$t4,	$t4,	$t5
                                         # int row = my_points[i].row;
-	
+	lw	$t1,	ROW_OFFT($t4)	# X offset + array index position
 					# int col = my_points[i].col;
-        
+        lw	$t2,	COL_OFFT($t4)	# Y offset + array index position
 
 	# 2) Load the height from the 2D array of integers
 	# &elem[i] = start of the array + ...
-	
-	
-	
+	mul	$t4,	$t1,	MAP_SIZE	# row offset = row * row length
+	mul	$t4,	$t4,	4	# Row offset * size of element (integer = 4)
+	mul	$t5,	$t2,	4	# Col offset = col * size of element (int = 4)
+	add	$t4,	$t4,	$t5	# Total offset = row offset + col offset
 					# int height = topography_grid[row][col];
 	lw	$t3, topography_grid($t4)	# load word from topography_grid($t4) into $t3
 

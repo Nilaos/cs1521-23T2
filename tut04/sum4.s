@@ -70,7 +70,7 @@ sum4_body:
 
 	# sum2(a0, a1)
 	jal	sum2			# jump to sum2 and save position to $ra
-	
+	# <--- return here from the jr ra in the function
 
 	add	$v0, $s0, $v0
 

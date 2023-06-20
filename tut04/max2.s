@@ -3,7 +3,7 @@
 # Register usage:
 #   - `a' is in a0, address of start of array
 #   - `length' is in a1, elements left in array
-#   - `first_element' is in $t0
+#   - `first_element' is in $s0
 #   - `max_so_far' is in $t1
 
 
@@ -13,17 +13,18 @@
 # int max(int a[], int length) {
 max:
 	# prologue
-	
+	push	$ra
+	push	$s0
 
 	# int first_element = a[0];
-	lw	$t0, 0($a0)		# 
+	lw	$s0, 0($a0)		# 
 
 	bne	$a1, 1, max__recursive	# if $a1 != 1 then recurse
 max__length_1:
 	# BASE CASE
 	# if (length == 1) {
 	# return first_element;
-	move 	$v0, $t0		# $v0 = first_element from $t0
+	move 	$v0, $s0		# $v0 = first_element from $s0
 	b	max__return
 
 max__recursive:
@@ -44,7 +45,7 @@ max__recursive:
 	move	$t1, $v0	# max_so_far = function call result
 
 	# if (first_element > max_so_far) {
-	bgt	$t0, $t1, max__swap_max_so_far	# if $t0 > $t1 then target
+	bgt	$s0, $t1, max__swap_max_so_far	# if $s0 > $t1 then target
 
 	# else
 	move	$v0, $t1
@@ -52,13 +53,13 @@ max__recursive:
 	
 max__swap_max_so_far:
 	# max_so_far = first_element;
-	move	$v0, $t0
+	move	$v0, $s0
 
 max__return:
 	# epilogue - MUST MATCH PROLOGUE
 	# clean up stack frame
-
-
+	pop	$s0
+	pop	$ra
 	jr	$ra
 
 
